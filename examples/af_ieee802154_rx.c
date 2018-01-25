@@ -29,7 +29,7 @@
 
 #define IEEE802154_ADDR_LEN 8
 #define MAX_PACKET_LEN 127
-#define EXTENDED 1
+//#define EXTENDED 0
 
 enum {
 	IEEE802154_ADDR_NONE = 0x0,
@@ -70,14 +70,14 @@ int main(int argc, char *argv[]) {
 	memset(&src, 0, sizeof(src));
 	src.family = AF_IEEE802154;
 	/* Used PAN ID is 0x23 here, adapt to your setup */
-	src.addr.pan_id = 0x0023;
+	src.addr.pan_id = 0x1234;
 
-#if EXTENDED /* IEEE 802.15.4 extended address usage */
+#if defined(EXTENDED) /* IEEE 802.15.4 extended address usage */
 	src.addr.addr_type = IEEE802154_ADDR_LONG;
 	memcpy(&src.addr.hwaddr, &long_addr, IEEE802154_ADDR_LEN);
 #else
 	src.addr.addr_type = IEEE802154_ADDR_SHORT;
-	src.addr.short_addr = 0x0002;
+	src.addr.short_addr = 0x0a;
 #endif
 
 	/* Bind socket on this side */
@@ -89,15 +89,16 @@ int main(int argc, char *argv[]) {
 	}
 
 	addrlen = sizeof(dst);
-
+	printf("Waiting for data receive...\n");
 	/* Infinite loop receiving 802.15.4 frames and print out */
-	while (1) {
+	for(;;) {
 		ret = recvfrom(sd, buf, MAX_PACKET_LEN, 0, (struct sockaddr *)&dst, &addrlen);
 		if (ret < 0) {
 			perror("recvfrom");
 			continue;
 		}
 		buf[ret] = '\0';
+		printf("Received (from %x): %s\n", dst.addr.short_addr, buf);
 #if EXTENDED
 		printf("Received (from %s): %s\n", dst.addr.hwaddr, buf);
 #else
