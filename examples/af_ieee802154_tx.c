@@ -29,7 +29,7 @@
 
 #define IEEE802154_ADDR_LEN 8
 #define MAX_PACKET_LEN 127
-#define EXTENDED 1
+#define EXTENDED 0
 
 enum {
 	IEEE802154_ADDR_NONE = 0x0,
@@ -70,14 +70,14 @@ int main(int argc, char *argv[]) {
 	memset(&dst, 0, sizeof(dst));
 	dst.family = AF_IEEE802154;
 	/* Used PAN ID is 0x23 here, adapt to your setup */
-	dst.addr.pan_id = 0x0023;
+	dst.addr.pan_id = 0xabcd;
 
 #if EXTENDED /* IEEE 802.15.4 extended address usage */
 	dst.addr.addr_type = IEEE802154_ADDR_LONG;
 	memcpy(&dst.addr.hwaddr, long_addr, IEEE802154_ADDR_LEN);
 #else
 	dst.addr.addr_type = IEEE802154_ADDR_SHORT;
-	dst.addr.short_addr = 0x0002;
+	dst.addr.short_addr = 0x000a;
 #endif
 
 	sprintf(buf, "Hello world from IEEE 802.15.4 socket example!");
