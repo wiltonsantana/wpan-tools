@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 	src.sin6_family = AF_INET6;
 	src.sin6_addr = in6addr_any;
 	/* Port within the compressed port range for potential NHC UDP compression */
-	src.sin6_port = htons(61617);
+	src.sin6_port = htons(19788);
 
 	/* Bind socket on this side */
 	ret = bind(sd, (struct sockaddr *)&src, sizeof(src));
