@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 	unsigned char buf[MAX_PACKET_LEN + 1];
 
 	/* Create IPv6 address family socket for the SOCK_DGRAM type */
-	sd = socket(PF_INET6, SOCK_DGRAM, 0);
+	sd = socket(PF_INET6, SOCK_DGRAM, 17);
 	if (sd < 0) {
 		perror("socket");
 		return 1;
@@ -57,10 +57,10 @@ int main(int argc, char *argv[]) {
 	memset(&dst, 0, sizeof(dst));
 	dst.sin6_family = AF_INET6;
 	/* Port within the compressed port range for potential NHC UDP compression */
-	dst.sin6_port = htons(61617);
-	inet_pton(AF_INET6, "ff02::1", &(dst.sin6_addr));
+	dst.sin6_port = htons(19788);
+	inet_pton(AF_INET6, "fe80:0:0:0:f890:655b:f676:ae8d", &(dst.sin6_addr));
 
-	sprintf(buf, "Hello world from AF_INET6 socket example!");
+	sprintf(buf, "Hello world from AF_INET6 socket example! HELLO FROM WILTON");
 
 	/* sendto() is used for implicity in this example, bin()/send() would
 	 * be an alternative */
